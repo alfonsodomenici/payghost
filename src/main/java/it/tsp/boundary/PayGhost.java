@@ -3,6 +3,7 @@ package it.tsp.boundary;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import it.tsp.control.Store;
 import it.tsp.entity.Account;
@@ -41,7 +42,19 @@ public class PayGhost {
     }
 
     public static void doRecharge(long accountId, BigDecimal amount) {
-
+        try {
+            // nuovo oggetto Recharge
+            Account account = Store.findAccountById(accountId)
+                    .orElseThrow(() -> new RechargeException("account non trovato: " + accountId));
+            Store.beginTran();
+            Store.saveRecharge(new Recharge(account, amount));
+            account.increaseCredit(amount);
+            Store.saveAccount(account);
+            Store.commitTran();
+        } catch (Exception ex) {
+            Store.rollTran();
+            throw new RechargeException(ex.getMessage());
+        }
     }
 
     public static void doTransaction(long senderId, long receiverId, BigDecimal amount) {

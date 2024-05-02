@@ -33,5 +33,7 @@ public class App {
                 "1234", BigDecimal.valueOf(100));
 
         System.out.println(saved);
+        PayGhost.doRecharge(saved.getId(), BigDecimal.valueOf(10.5));
+        
     }
 }

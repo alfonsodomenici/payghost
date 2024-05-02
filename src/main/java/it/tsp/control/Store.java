@@ -1,5 +1,7 @@
 package it.tsp.control;
 
+import java.util.Optional;
+
 import it.tsp.entity.Account;
 import it.tsp.entity.Recharge;
 import jakarta.persistence.EntityManager;
@@ -56,5 +58,10 @@ public class Store {
         Recharge saved = em.merge(e);
         em.getTransaction().commit();
         return saved;
+    }
+
+    public static Optional<Account> findAccountById(long accountId) {
+        Account account = em.find(Account.class, accountId);
+        return account == null ? Optional.empty() : Optional.of(account);
     }
 }
