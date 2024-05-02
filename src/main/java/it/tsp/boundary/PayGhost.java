@@ -58,7 +58,25 @@ public class PayGhost {
     }
 
     public static void doTransaction(long senderId, long receiverId, BigDecimal amount) {
-
+        try {
+            Account sender = Store.findAccountById(senderId)
+                    .orElseThrow(() -> new RechargeException("account non trovato: " + senderId));
+            Account receiver = Store.findAccountById(receiverId)
+                    .orElseThrow(() -> new RechargeException("account non trovato: " + receiverId));
+            if(!sender.hasCredit(amount)){
+                throw new TransactionException("Credito insufficiente per: " + sender);
+            }
+            Store.beginTran();
+            Store.saveTransaction(new Transaction(sender, receiver, amount));
+            receiver.increaseCredit(amount);
+            sender.decreaseCredit(amount);
+            Store.saveAccount(receiver);
+            Store.saveAccount(sender);
+            Store.commitTran();
+        } catch (Exception ex) {
+            Store.rollTran();
+            throw new TransactionException(ex.getMessage());
+        }
     }
 
     public static List<Transaction> transactionByUser(long accountId) {

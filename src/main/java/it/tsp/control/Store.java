@@ -2,8 +2,11 @@ package it.tsp.control;
 
 import java.util.Optional;
 
+import java.util.List;
+
 import it.tsp.entity.Account;
 import it.tsp.entity.Recharge;
+import it.tsp.entity.Transaction;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -60,8 +63,30 @@ public class Store {
         return saved;
     }
 
+    public static Transaction saveTransaction(Transaction e) {
+        if (em.getTransaction().isActive()) {
+            return em.merge(e);
+        }
+        em.getTransaction().begin();
+        Transaction saved = em.merge(e);
+        em.getTransaction().commit();
+        return saved;
+    }
+
     public static Optional<Account> findAccountById(long accountId) {
         Account account = em.find(Account.class, accountId);
         return account == null ? Optional.empty() : Optional.of(account);
+    }
+
+    public static List<Recharge> findRechargeByAccountId(long accountId){
+        return em.createNamedQuery(Recharge.FIND_BY_ACCOUNT_ID, Recharge.class)
+            .setParameter("accountId", accountId)
+            .getResultList();        
+    }
+
+    public static List<Transaction> findTransactionByAccountId(long accountId){
+        return em.createNamedQuery(Transaction.FIND_BY_ACCOUNT_ID, Transaction.class)
+            .setParameter("accountId", accountId)
+            .getResultList();
     }
 }

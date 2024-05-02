@@ -7,11 +7,19 @@ import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+
+@NamedQueries({
+    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select e from Transaction e where e.account.id= :accountId")
+})
 
 @Entity
 @Table(name = "transaction")
 public class Transaction extends BaseEntity implements Serializable{
+
+    public static final String FIND_BY_ACCOUNT_ID = "Transaction.findByAccountId";
 
     public Transaction(){}
 
