@@ -6,6 +6,10 @@ import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "account")
@@ -18,14 +22,33 @@ public class Account extends BaseEntity implements Serializable {
         this.pwd = pwd;
     }
 
+    
+    public Account(String fname, String lname,
+            @Email(message = "la proprietà email non contiene un indirizzo email valido") String email,
+            @NotBlank(message = "la proprietà pwd non può avere solo spazi") @Size(min = 4, message = "la proprietà pwd deve avere almeno 4 caratteri") String pwd) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.pwd = pwd;
+    }
+
+
     private String fname;
     private String lname;
+    
+    @Email(message = "la proprietà email non contiene un indirizzo email valido")
     @Column(nullable = false, unique = true)
     private String email;
+
+    
+    @NotBlank(message = "la proprietà pwd non può avere solo spazi")
+    @Size(min = 4, message = "la proprietà pwd deve avere almeno 4 caratteri")
     @Column(nullable = false)
     private String pwd;
+    
+    @PositiveOrZero(message = "La proprietà credit deve essere >= 0")
     @Column(precision = 6, scale = 2)
-    private BigDecimal credit;
+    private BigDecimal credit = BigDecimal.ZERO;
 
     public String getFname() {
         return fname;
@@ -56,6 +79,7 @@ public class Account extends BaseEntity implements Serializable {
     }
     public void setCredit(BigDecimal creadit) {
         this.credit = creadit;
+        throw new RuntimeException("impossibile impostare il credit...");
     }
     
     @Override
