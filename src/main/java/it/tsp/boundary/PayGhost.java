@@ -63,7 +63,7 @@ public class PayGhost {
                     .orElseThrow(() -> new RechargeException("account non trovato: " + senderId));
             Account receiver = Store.findAccountById(receiverId)
                     .orElseThrow(() -> new RechargeException("account non trovato: " + receiverId));
-            if(!sender.hasCredit(amount)){
+            if(!sender.hasSufficientCredit(amount)){
                 throw new TransactionException("Credito insufficiente per: " + sender);
             }
             Store.beginTran();

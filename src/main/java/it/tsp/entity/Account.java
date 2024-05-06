@@ -56,7 +56,7 @@ public class Account extends BaseEntity implements Serializable {
         this.credit = this.credit.subtract(amount);
     }
 
-    public boolean hasCredit(BigDecimal amount) {
+    public boolean hasSufficientCredit(BigDecimal amount) {
         return this.credit.compareTo(amount) > 0;
     }
 
