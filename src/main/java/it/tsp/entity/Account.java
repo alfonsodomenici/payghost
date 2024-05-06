@@ -60,6 +60,9 @@ public class Account extends BaseEntity implements Serializable {
         return this.credit.compareTo(amount) > 0;
     }
 
+    public String getFullname(){
+        return lname + " " + fname;
+    }
     public String getFname() {
         return fname;
     }

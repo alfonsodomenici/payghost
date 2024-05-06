@@ -10,6 +10,7 @@ import it.tsp.entity.Transaction;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.TypedQuery;
 
 public class Store {
 
@@ -38,7 +39,7 @@ public class Store {
 
     public static void rollTran() {
         if (!em.getTransaction().isActive()) {
-            throw new StoreException("Nessuna transazione attiva");
+            return;
         }
         em.getTransaction().rollback();
     }
@@ -78,15 +79,16 @@ public class Store {
         return account == null ? Optional.empty() : Optional.of(account);
     }
 
-    public static List<Recharge> findRechargeByAccountId(long accountId){
+    public static List<Recharge> findRechargesByAccountId(long accountId) {
         return em.createNamedQuery(Recharge.FIND_BY_ACCOUNT_ID, Recharge.class)
-            .setParameter("accountId", accountId)
-            .getResultList();        
+                .setParameter("id", accountId)
+                .getResultList();
     }
 
-    public static List<Transaction> findTransactionByAccountId(long accountId){
+    public static List<Transaction> findTransactionsByAccountId(long accountId) {
         return em.createNamedQuery(Transaction.FIND_BY_ACCOUNT_ID, Transaction.class)
-            .setParameter("accountId", accountId)
+            .setParameter("id",accountId)
             .getResultList();
     }
+
 }

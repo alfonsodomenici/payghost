@@ -13,7 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Positive;
 
 @NamedQueries({
-    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select e from Recharge e where e.account.id= :accountId")
+    @NamedQuery(name = Recharge.FIND_BY_ACCOUNT_ID, query = "select e from Recharge e where e.account.id= :id")
 })
 @Entity
 @Table(name = "recharge")

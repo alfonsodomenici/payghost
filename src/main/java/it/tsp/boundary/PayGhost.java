@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import it.tsp.control.Store;
 import it.tsp.entity.Account;
@@ -41,7 +43,7 @@ public class PayGhost {
 
     }
 
-    public static void doRecharge(long accountId, BigDecimal amount) {
+    public static void recharge(long accountId, BigDecimal amount) {
         try {
             // nuovo oggetto Recharge
             Account account = Store.findAccountById(accountId)
@@ -57,13 +59,13 @@ public class PayGhost {
         }
     }
 
-    public static void doTransaction(long senderId, long receiverId, BigDecimal amount) {
+    public static void sendMoney(long senderId, long receiverId, BigDecimal amount) {
         try {
             Account sender = Store.findAccountById(senderId)
-                    .orElseThrow(() -> new RechargeException("account non trovato: " + senderId));
+                    .orElseThrow(() -> new TransactionException("account non trovato: " + senderId));
             Account receiver = Store.findAccountById(receiverId)
-                    .orElseThrow(() -> new RechargeException("account non trovato: " + receiverId));
-            if(!sender.hasSufficientCredit(amount)){
+                    .orElseThrow(() -> new TransactionException("account non trovato: " + receiverId));
+            if (!sender.hasSufficientCredit(amount)) {
                 throw new TransactionException("Credito insufficiente per: " + sender);
             }
             Store.beginTran();
@@ -80,6 +82,10 @@ public class PayGhost {
     }
 
     public static List<Transaction> transactionByUser(long accountId) {
-        throw new UnsupportedOperationException("not implement yet..");
+        return Store.findTransactionsByAccountId(accountId);
+    }
+
+    public static List<Recharge> rechargeByUser(long accountId) {
+        return Store.findRechargesByAccountId(accountId);
     }
 }

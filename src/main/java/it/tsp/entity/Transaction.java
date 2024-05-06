@@ -12,9 +12,8 @@ import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 
 @NamedQueries({
-    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select e from Transaction e where e.account.id= :accountId")
+    @NamedQuery(name = Transaction.FIND_BY_ACCOUNT_ID, query = "select e from Transaction e where e.sender.id= :id or e.receiver.id= :id")
 })
-
 @Entity
 @Table(name = "transaction")
 public class Transaction extends BaseEntity implements Serializable{
@@ -55,6 +54,10 @@ public class Transaction extends BaseEntity implements Serializable{
     }
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+    public BigDecimal viewAmount(long accountId){
+        return sender.getId()==accountId ? BigDecimal.valueOf(- amount.doubleValue())
+            : BigDecimal.valueOf(amount.doubleValue());
     }
     public LocalDate getPerformedOn() {
         return performedOn;
