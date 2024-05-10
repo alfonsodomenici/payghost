@@ -5,16 +5,24 @@ import java.math.BigDecimal;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
+@NamedQueries({
+    @NamedQuery(name = Account.FIND_BY_USR_AND_PWD, 
+        query = "select e from Account e where e.email= :email and e.pwd= :pwd")
+})
+
 @Entity
 @Table(name = "account")
 public class Account extends BaseEntity implements Serializable {
 
+    public static final String FIND_BY_USR_AND_PWD = "Account.findByUserAmdPwd";
     public Account() {
     }
 

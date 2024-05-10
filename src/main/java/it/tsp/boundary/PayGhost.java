@@ -4,15 +4,17 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import it.tsp.control.Store;
 import it.tsp.entity.Account;
 import it.tsp.entity.Recharge;
 import it.tsp.entity.Transaction;
 
 public class PayGhost {
+
+
+    public static Optional<Account> login(String email, String pwd){
+        return Store.findAccountByUsrAndPwd(email,pwd);
+    } 
 
     public static Account registration(String fname, String lname, String email,
             String pwd, String confirmPwd, BigDecimal credit) {
