@@ -24,26 +24,22 @@ public class App {
                  * Validator validator = vf.getValidator();
                  * Set<ConstraintViolation<Account>> result = validator.validate(account);
                  * result.forEach(System.out::println);
+                 
+                  PayGhost.registration(
+                                "alfonso",
+                                "domenici",
+                                "alfonso.domenici@gmail.com",
+                                "1234",
+                                "1234", BigDecimal.valueOf(100))
                  */
 
                 Account alfonso, mario;
 
                 System.out.println(PayGhost.login("alfonso.domenici@gmail.com", "1234"));
 
-                alfonso = PayGhost.login("alfonso.domenici@gmail.com", "1234")
-                                .orElseGet( () -> PayGhost.registration(
-                                                "alfonso",
-                                                "domenici",
-                                                "alfonso.domenici@gmail.com",
-                                                "1234",
-                                                "1234", BigDecimal.valueOf(100)));
-                mario = PayGhost.login("mario.rossi@gmail.com", "1234")
-                                .orElseGet(() -> PayGhost.registration(
-                                                "mario",
-                                                "mario",
-                                                "mario.rossi@gmail.com",
-                                                "1234",
-                                                "1234", BigDecimal.valueOf(100)));
+                alfonso = PayGhost.login("alfonso.domenici@gmail.com", "1234");
+
+                mario = PayGhost.login("mario.rossi@gmail.com", "1234");
 
                 System.out.println(alfonso);
 

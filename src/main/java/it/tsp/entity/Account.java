@@ -14,15 +14,15 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 @NamedQueries({
-    @NamedQuery(name = Account.FIND_BY_USR_AND_PWD, 
-        query = "select e from Account e where e.email= :email and e.pwd= :pwd")
+    @NamedQuery(name = Account.FIND_BY_USR, 
+        query = "select e from Account e where e.email= :email")
 })
 
 @Entity
 @Table(name = "account")
 public class Account extends BaseEntity implements Serializable {
 
-    public static final String FIND_BY_USR_AND_PWD = "Account.findByUserAmdPwd";
+    public static final String FIND_BY_USR = "Account.findByUser";
     public Account() {
     }
 

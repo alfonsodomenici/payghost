@@ -113,10 +113,9 @@ public class Store {
                 .getResultList();
     }
 
-    public static Optional<Account> findAccountByUsrAndPwd(String email, String pwd) {
-        List<Account> result = em.createNamedQuery(Account.FIND_BY_USR_AND_PWD, Account.class)
+    public static Optional<Account> findAccountByUsr(String email) {
+        List<Account> result = em.createNamedQuery(Account.FIND_BY_USR, Account.class)
             .setParameter("email", email)
-            .setParameter("pwd", pwd)
             .getResultList();
         return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
