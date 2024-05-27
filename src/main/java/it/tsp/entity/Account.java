@@ -3,6 +3,11 @@ package it.tsp.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
+import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.NamedQueries;
@@ -15,8 +20,8 @@ import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
 @NamedQueries({
-    @NamedQuery(name = Account.FIND_BY_USR, 
-        query = "select e from Account e where e.email= :email")
+        @NamedQuery(name = Account.FIND_BY_USR, query = "select e from Account e where e.email= :email"),
+        @NamedQuery(name = Account.FIND_ALL, query = "select e from Account e order by e.lname")
 })
 
 @Entity
@@ -24,6 +29,8 @@ import jakarta.validation.constraints.Size;
 public class Account extends BaseEntity implements Serializable {
 
     public static final String FIND_BY_USR = "Account.findByUser";
+    public static final String FIND_ALL = "Account.findAll";
+
     public Account() {
     }
 
@@ -44,6 +51,7 @@ public class Account extends BaseEntity implements Serializable {
     private String fname;
     private String lname;
 
+    @NotBlank
     @Email(message = "la proprietà email non contiene un indirizzo email valido")
     @Column(nullable = false, unique = true)
     private String email;
@@ -72,9 +80,19 @@ public class Account extends BaseEntity implements Serializable {
         return this.credit.compareTo(amount) > 0;
     }
 
-    public String getFullname(){
+    public String getFullname() {
         return lname + " " + fname;
     }
+
+    public JsonObject toJsonSlice() {
+        JsonObjectBuilder jb = Json.createObjectBuilder();
+        return jb.add("id", this.getId())
+                .add("fname", this.getFname())
+                .add("lname", this.getLname())
+                .build();
+    }
+
+    /* get e set */
     public String getFname() {
         return fname;
     }
@@ -99,6 +117,7 @@ public class Account extends BaseEntity implements Serializable {
         this.email = email;
     }
 
+    @JsonbTransient
     public String getPwd() {
         return pwd;
     }
@@ -107,7 +126,6 @@ public class Account extends BaseEntity implements Serializable {
         this.pwd = pwd;
     }
 
-    
     public String getConfirmPwd() {
         return confirmPwd;
     }

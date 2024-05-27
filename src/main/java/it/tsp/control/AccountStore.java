@@ -26,9 +26,9 @@ public class AccountStore implements Serializable {
         return saved;
     }
 
-    public List<Account> findAll() {
-        return em.createQuery("select e from Account e", Account.class)
-                .getResultList();
+    public List<Account> findAll(){
+        return em.createNamedQuery(Account.FIND_ALL, Account.class)
+            .getResultList();
     }
 
     public Optional<Account> findAccountById(long accountId) {
