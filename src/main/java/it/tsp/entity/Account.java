@@ -8,6 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -51,6 +52,9 @@ public class Account extends BaseEntity implements Serializable {
     @Size(min = 4, message = "la proprietà pwd deve avere almeno 4 caratteri")
     @Column(nullable = false)
     private String pwd;
+
+    @Transient
+    private String confirmPwd;
 
     @PositiveOrZero(message = "La proprietà credit deve essere >= 0")
     @Column(precision = 6, scale = 2)
@@ -101,6 +105,15 @@ public class Account extends BaseEntity implements Serializable {
 
     public void setPwd(String pwd) {
         this.pwd = pwd;
+    }
+
+    
+    public String getConfirmPwd() {
+        return confirmPwd;
+    }
+
+    public void setConfirmPwd(String confirmPwd) {
+        this.confirmPwd = confirmPwd;
     }
 
     public BigDecimal getCredit() {

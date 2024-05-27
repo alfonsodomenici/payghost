@@ -30,42 +30,27 @@ public class PayGhost {
     public  Account registration(String fname, String lname, String email,
             String pwd, String confirmPwd, BigDecimal credit) {
 
-        try {
-            if (!Objects.equals(pwd, confirmPwd)) {
-                throw new RegistrationException("le password non corrispondono");
-            }
-
-            Account account = new Account(fname, lname, email, EncodeUtils.encode(pwd));
-
-            Account saved = accountStore.saveAccount(account);
-
-            if (credit.compareTo(BigDecimal.ZERO) > 0) {
-                Recharge recharge = new Recharge(saved, credit);
-                Recharge r = accountStore.saveRecharge(recharge);
-                saved.setCredit(credit);
-                saved = accountStore.saveAccount(saved);
-            }
-            return saved;
-        } catch (Exception ex) {
-            throw new RegistrationException(ex.getMessage());
-        }
+                throw new UnsupportedOperationException();
 
     }
 
     public  void recharge(long accountId, BigDecimal amount) {
+        /* 
         try {
             // nuovo oggetto Recharge
             Account account = accountStore.findAccountById(accountId)
                     .orElseThrow(() -> new RechargeException("account non trovato: " + accountId));
-                    accountStore.saveRecharge(new Recharge(account, amount));
+                    new Recharge(account, amount).saveRecharge(accountStore);
             account.increaseCredit(amount);
             accountStore.saveAccount(account);
         } catch (Exception ex) {
             throw new RechargeException(ex.getMessage());
         }
+        */
     }
 
     public  void sendMoney(long senderId, long receiverId, BigDecimal amount) {
+        /*
         try {
             Account sender = accountStore.findAccountById(senderId)
                     .orElseThrow(() -> new TransactionException("account non trovato: " + senderId));
@@ -82,13 +67,20 @@ public class PayGhost {
         } catch (Exception ex) {
             throw new TransactionException(ex.getMessage());
         }
+         */
     }
 
     public  List<Transaction> transactionByUser(long accountId) {
+        throw new UnsupportedOperationException();
+        /*
         return accountStore.findTransactionsByAccountId(accountId);
+         */
     }
 
     public  List<Recharge> rechargeByUser(long accountId) {
+        throw new UnsupportedOperationException();
+        /*
         return accountStore.findRechargesByAccountId(accountId);
+         */
     }
 }
