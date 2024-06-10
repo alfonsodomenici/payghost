@@ -4,11 +4,7 @@ import java.util.Optional;
 import java.io.Serializable;
 import java.util.List;
 
-import it.tsp.dto.TxEssential;
 import it.tsp.entity.Account;
-import it.tsp.entity.Recharge;
-import it.tsp.entity.Transaction;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

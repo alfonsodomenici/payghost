@@ -5,7 +5,6 @@ import java.util.List;
 
 import it.tsp.dto.TxEssential;
 import it.tsp.entity.Transaction;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -13,7 +12,7 @@ import jakarta.transaction.Transactional;
 
 @RequestScoped
 @Transactional(Transactional.TxType.REQUIRED)
-public class TrandactionStore implements Serializable {
+public class TransactionStore implements Serializable {
 
     @PersistenceContext(unitName = "payghost")
     private EntityManager em;
