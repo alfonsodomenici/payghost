@@ -142,10 +142,10 @@ public class AccountsResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}/transactions")
-    public Response allTransactions(@PathParam("id") long id, @Valid CreateTransactionDTO e) {
+    public Response allTransactions(@PathParam("id") long id) {
         Account account = accountStore.findAccountById(id)
                 .orElseThrow(() -> new NotFoundException("account not exist"));
-        return Response.ok(transactionStore.findTransactionsByAccountId(id))
+        return Response.ok(transactionStore.findTransactionsByAccountIdFetchAll(id))
                 .build();
     }
 }
