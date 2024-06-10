@@ -6,21 +6,24 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.naming.OperationNotSupportedException;
+
 import it.tsp.control.AccountStore;
-import it.tsp.control.EncodeUtils;
 import it.tsp.control.RechargeStore;
 import it.tsp.dto.AccountSlice;
+import it.tsp.dto.CreateRechargeDTO;
+import it.tsp.dto.CreateTransactionDTO;
 import it.tsp.entity.Account;
 import it.tsp.entity.Recharge;
-import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.json.JsonArray;
-import jakarta.json.stream.JsonCollectors;
+import jakarta.json.JsonObject;
 import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -84,5 +87,44 @@ public class AccountsResource {
         Optional<Account> result = accountStore.findAccountById(id);
         return result.isPresent() ? Response.ok(result.get()).build()
                 : Response.status(Status.NOT_FOUND).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Transactional(value = TxType.REQUIRES_NEW)
+    @Path("/{id}/recharges")
+    public Response doRecharge(@PathParam("id") long id, @Valid CreateRechargeDTO e) {
+        Account account = accountStore.findAccountById(id)
+                .orElseThrow(() -> new NotFoundException("account not exist"));
+        Recharge toSave = new Recharge(account, e.amount());
+        Recharge saved = rechargeStore.saveRecharge(toSave);
+        account.increaseCredit(e.amount());
+        accountStore.saveAccount(account);
+        return Response.status(Status.CREATED)
+                .entity(saved)
+                .build();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}/recharges")
+    public Response allRecharges(@PathParam("id") long id) {
+        throw new UnsupportedOperationException();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}/transactions")
+    public Response doTransaction(@PathParam("id") long id, @Valid CreateRechargeDTO e) {
+        throw new UnsupportedOperationException();
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}/transactions")
+    public Response allTransactions(@PathParam("id") long id, @Valid CreateTransactionDTO e) {
+        throw new UnsupportedOperationException();
     }
 }
