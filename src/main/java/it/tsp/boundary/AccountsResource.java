@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.naming.OperationNotSupportedException;
 
 import it.tsp.control.AccountStore;
+import it.tsp.control.EncodeUtils;
 import it.tsp.control.PayghostManager;
 import it.tsp.control.RechargeStore;
 import it.tsp.control.TransactionStore;
@@ -61,7 +62,7 @@ public class AccountsResource {
             throw new PayghostException("le password non corrispondono");
         }
 
-        // account.setPwd(EncodeUtils.encode(account.getPwd()));
+        account.setPwd(EncodeUtils.encode(account.getPwd()));
 
         Account saved = accountStore.saveAccount(account);
 
