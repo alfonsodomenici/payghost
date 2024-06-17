@@ -2,6 +2,7 @@ package it.tsp.control;
 
 import java.math.BigDecimal;
 
+import it.tsp.JWTManager;
 import it.tsp.boundary.PayghostException;
 import it.tsp.dto.CredentialDTO;
 import it.tsp.entity.Account;
@@ -19,6 +20,9 @@ public class PayghostManager {
     @Inject
     TransactionStore transactionStore;
 
+    @Inject
+    JWTManager jwtManager;
+
     public Transaction doTransaction(Account sender, Account receiver, BigDecimal amount) {
         if (!sender.hasSufficientCredit(amount)) {
             throw new PayghostException("insufficient credit");
@@ -33,11 +37,12 @@ public class PayghostManager {
     }
 
     public String doLogin(@Valid CredentialDTO e) {
+        System.out.println(e);
         Account account = accountStore.findAccountByUsr(e.email())
                 .orElseThrow(() -> new PayghostException("login failed"));
         if (!EncodeUtils.verify(e.pwd(), account.getPwd())) {
             throw new PayghostException("login failed");
         }
-        return String.valueOf(account.getId());
+        return jwtManager.generate(account);
     }
 }
