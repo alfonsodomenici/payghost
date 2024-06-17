@@ -25,6 +25,8 @@ package it.tsp;
  */
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
+
 import jakarta.inject.Inject;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerResponseContext;
@@ -40,9 +42,7 @@ import jakarta.ws.rs.ext.Provider;
 @Provider
 public class CorsResponseFilter implements ContainerResponseFilter {
 
-    @Inject
-    System.Logger logger;
-
+    
     public static final String ALLOWED_METHODS = "GET, POST, PUT, DELETE, OPTIONS, HEAD";
     public final static int MAX_AGE = 42 * 60 * 60;
     public final static String DEFAULT_ALLOWED_HEADERS = "*";//origin,accept,content-type";
@@ -52,7 +52,7 @@ public class CorsResponseFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
         final MultivaluedMap<String, Object> headers = responseContext.getHeaders();
 
-        logger.log(System.Logger.Level.INFO, requestContext.getHeaderString("Origin"));
+        //logger.log(System.Logger.Level.INFO, requestContext.getHeaderString("Origin"));
         
         headers.add("Access-Control-Allow-Origin", "*");
         headers.add("Access-Control-Allow-Headers", getRequestedAllowedHeaders(requestContext));
