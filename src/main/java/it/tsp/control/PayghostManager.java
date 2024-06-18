@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import it.tsp.JWTManager;
 import it.tsp.PayghostException;
+import it.tsp.PayghostSecurityException;
 import it.tsp.dto.CredentialDTO;
 import it.tsp.entity.Account;
 import it.tsp.entity.Transaction;
@@ -39,9 +40,9 @@ public class PayghostManager {
     public String doLogin(@Valid CredentialDTO e) {
         System.out.println(e);
         Account account = accountStore.findAccountByUsr(e.email())
-                .orElseThrow(() -> new PayghostException("login failed"));
+                .orElseThrow(() -> new PayghostSecurityException("login failed"));
         if (!EncodeUtils.verify(e.pwd(), account.getPwd())) {
-            throw new PayghostException("login failed");
+            throw new PayghostSecurityException("login failed");
         }
         return jwtManager.generate(account);
     }
