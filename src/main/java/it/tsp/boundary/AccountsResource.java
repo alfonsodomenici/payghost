@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import it.tsp.PayghostException;
+import it.tsp.PayghostSecurityException;
 import it.tsp.control.AccountStore;
 import it.tsp.control.EncodeUtils;
 import it.tsp.control.PayghostManager;
@@ -177,11 +179,11 @@ public class AccountsResource {
         private void checkUserSecurity(long userPathId) {
                 String subject = jwt.getSubject();
                 if (subject == null || subject.isBlank()) {
-                        throw new PayghostException("security exception");
+                        throw new PayghostSecurityException("security information not valid");
                 }
 
                 if (!String.valueOf(userPathId).equals(subject)) {
-                        throw new PayghostException("security violation exception");
+                        throw new PayghostSecurityException("attempt to access not owned resources");
                 }
         }
 }
