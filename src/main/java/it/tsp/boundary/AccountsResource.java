@@ -3,10 +3,7 @@ package it.tsp.boundary;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.naming.OperationNotSupportedException;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
@@ -26,7 +23,6 @@ import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
-import jakarta.json.JsonObject;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
 import jakarta.validation.Valid;
@@ -39,12 +35,16 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.core.Response.Status;
 
 @DenyAll
 @RequestScoped
 @Path("/accounts")
 public class AccountsResource {
+
+        @Inject
+        SecurityContext ctx;
 
         @Inject
         AccountStore accountStore;
@@ -91,6 +91,9 @@ public class AccountsResource {
         @GET
         @Produces(MediaType.APPLICATION_JSON)
         public Response findAll() {
+                
+                System.out.println(ctx.isUserInRole("USERS"));
+
                 List<Account> result = accountStore.findAll();
                 List<AccountSlice> convertedResult = result.stream()
                                 .map(v -> new AccountSlice(v.getId(), v.getFname(), v.getLname()))
