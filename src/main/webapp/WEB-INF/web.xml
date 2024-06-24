@@ -6,7 +6,7 @@
     <data-source>
         <name>java:global/jdbc/payghost</name>
         <class-name>com.mysql.cj.jdbc.MysqlConnectionPoolDataSource</class-name>
-        <url>jdbc:mysql://localhost:3306/payghost</url>
+        <url>jdbc:mysql://192.168.51.171:3306/payghost</url>
         <user>payghost</user>
         <password>payghost</password>
     </data-source>

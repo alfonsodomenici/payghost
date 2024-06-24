@@ -1,18 +1,13 @@
 package it.tsp.boundary;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import it.tsp.dto.CredentialDTO;
-import jakarta.ws.rs.core.Response.Status;
 import static org.hamcrest.Matchers.equalTo;
 
 public class AuthsResourceTest {
@@ -28,7 +23,7 @@ public class AuthsResourceTest {
 
     @Test
     public void testLoginFailed() throws JsonProcessingException{
-
+        
         CredentialDTO credential = new CredentialDTO("xx@gmail.com", "xx");
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(credential);
@@ -40,5 +35,7 @@ public class AuthsResourceTest {
             .post();
 
         resp.then().assertThat().statusCode(equalTo(401));
+        
+        
     }
 }
