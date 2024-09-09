@@ -24,6 +24,8 @@ import jakarta.validation.constraints.Size;
         @NamedQuery(name = Account.FIND_ALL, query = "select e from Account e order by e.lname")
 })
 
+
+
 @Entity
 @Table(name = "account")
 public class Account extends BaseEntity implements Serializable {

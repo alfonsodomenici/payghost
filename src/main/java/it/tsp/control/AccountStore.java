@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.io.Serializable;
 import java.util.List;
 
+import it.tsp.dto.AccountSlice;
 import it.tsp.entity.Account;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -22,9 +23,23 @@ public class AccountStore implements Serializable {
         return saved;
     }
 
-    public List<Account> findAll(){
+    public void prova() {
+        List<AccountSlice> result = em.createQuery("select new it.tsp.dto.AccountSlice(e.id,e.fname,e.lname) from Account e", AccountSlice.class )
+                .getResultList();
+
+
+    }
+
+    public List<Account> findAll() {
         return em.createNamedQuery(Account.FIND_ALL, Account.class)
-            .getResultList();
+                .getResultList();
+    }
+
+    public List<AccountSlice> findAllSlice() {
+        return em
+                .createQuery("select new it.tsp.dto.AccountSlice(e.id,e.fname,e.lname) from Account e",
+                        AccountSlice.class)
+                .getResultList();
     }
 
     public Optional<Account> findAccountById(long accountId) {

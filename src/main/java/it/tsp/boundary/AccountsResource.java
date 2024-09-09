@@ -95,12 +95,7 @@ public class AccountsResource {
         public Response findAll() {
                 
                 System.out.println(ctx.isUserInRole("USERS"));
-
-                List<Account> result = accountStore.findAll();
-                List<AccountSlice> convertedResult = result.stream()
-                                .map(v -> new AccountSlice(v.getId(), v.getFname(), v.getLname()))
-                                .collect(Collectors.toList());
-                return Response.ok(convertedResult).build();
+                return Response.ok(accountStore.findAllSlice()).build();
         }
 
         @RolesAllowed("USERS")
